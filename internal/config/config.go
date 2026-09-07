@@ -11,6 +11,7 @@ type Config struct {
 	DatabaseURL    string
 	LogLevel       string
 	RequestTimeout time.Duration
+	MigrationsPath string
 }
 
 func Load() *Config {
@@ -20,6 +21,7 @@ func Load() *Config {
 		DatabaseURL:    getEnv("DATABASE_URL", "postgres://user:password@localhost:5432/subscriptions?sslmode=disable"),
 		LogLevel:       getEnv("LOG_LEVEL", "info"),
 		RequestTimeout: getDurationEnv("REQUEST_TIMEOUT", 30*time.Second),
+		MigrationsPath: getEnv("MIGRATIONS_PATH", "./migrations"),
 	}
 }
 

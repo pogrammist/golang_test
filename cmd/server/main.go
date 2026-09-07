@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/pogrammist/golang_test/internal/config"
 	"github.com/pogrammist/golang_test/internal/model"
+	"github.com/pogrammist/golang_test/internal/repository"
 	"go.uber.org/zap"
 )
 
@@ -19,6 +20,12 @@ func main() {
 		logger.Fatal("failed to connect to database", zap.Error(err))
 	}
 	defer db.Close()
+
+	repo := repository.NewSubscriptionRepository(db)
+	if err := repo.RunMigrations(cfg.MigrationsPath, cfg.DatabaseURL); err != nil {
+		logger.Fatal("failed to run migrations", zap.Error(err))
+	}
+	logger.Info("database migrations completed")
 }
 
 func setupLogger(level string) *zap.Logger {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/pogrammist/golang_test/internal/config"
+	"github.com/pogrammist/golang_test/internal/model"
 	"go.uber.org/zap"
 )
 
@@ -12,6 +13,12 @@ func main() {
 	defer logger.Sync()
 
 	logger.Info("starting subscription service", zap.String("address", cfg.Address()))
+
+	db, err := model.NewDB(cfg.DatabaseURL)
+	if err != nil {
+		logger.Fatal("failed to connect to database", zap.Error(err))
+	}
+	defer db.Close()
 }
 
 func setupLogger(level string) *zap.Logger {

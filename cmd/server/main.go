@@ -1,12 +1,20 @@
 package main
 
+// @title Subscription Aggregation Service API
+// @version 1.0
+// @description REST service for aggregating online subscription data
+// @host localhost:8080
+// @BasePath /
+
 import (
 	"github.com/gin-gonic/gin"
+	_ "github.com/pogrammist/golang_test/docs"
 	"github.com/pogrammist/golang_test/internal/config"
 	"github.com/pogrammist/golang_test/internal/handler"
 	"github.com/pogrammist/golang_test/internal/model"
 	"github.com/pogrammist/golang_test/internal/repository"
 	"github.com/pogrammist/golang_test/internal/service"
+	swaggerFiles "github.com/swaggo/http-swagger"
 	"go.uber.org/zap"
 )
 
@@ -44,6 +52,7 @@ func main() {
 	router.Use(gin.Recovery())
 
 	router.GET("/health", subscriptionHandler.HealthCheck)
+	router.GET("/swagger/*any", gin.WrapH(swaggerFiles.Handler()))
 
 	v1 := router.Group("/")
 	{
